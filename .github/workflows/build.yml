@@ -7,21 +7,17 @@ on:
 
 jobs:
   build:
-    name: Build calendarify.exe
     runs-on: windows-latest
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
+    - uses: actions/checkout@v3
 
-    - name: Set up Python
-      uses: actions/setup-python@v4
+    - uses: actions/setup-python@v4
       with:
-        python-version: '3.13'
+        python-version: '3.11'
 
     - name: Install dependencies
-      run: |
-        pip install pyinstaller colorama pyfiglet
+      run: pip install pyinstaller colorama pyfiglet
 
     - name: Get pyfiglet fonts path
       id: fonts-path
@@ -29,15 +25,21 @@ jobs:
         echo "FONTS_PATH=$(python -c "import pyfiglet, os; print(os.path.join(os.path.dirname(pyfiglet.__file__), 'fonts'))")" >> $GITHUB_ENV
 
     - name: Build with PyInstaller
-      run: pyinstaller --onefile --hidden-import=colorama --hidden-import=pyfiglet --add-data "%FONTS_PATH%;pyfiglet/fonts" command_line_app/backend/app.py --name calendarify
+      shell: pwsh
+      run: |
+        pyinstaller --onefile `
+          --hidden-import=colorama `
+          --hidden-import=pyfiglet `
+          --add-data "$env:FONTS_PATH;pyfiglet/fonts" `
+          command_line_app/backend/app.py --name calendarify
 
     - name: Create dist folder (if missing) and move .exe
+      shell: pwsh
       run: |
-        mkdir command_line_app\dist
-        move dist\calendarify.exe command_line_app\dist\calendarify.exe
+        mkdir -Force command_line_app\dist
+        Move-Item -Path dist\calendarify.exe -Destination command_line_app\dist\calendarify.exe
 
-    - name: Upload executable artifact
-      uses: actions/upload-artifact@v4
+    - uses: actions/upload-artifact@v4
       with:
         name: calendarify-exe
         path: command_line_app/dist/calendarify.exe
