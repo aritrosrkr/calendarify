@@ -59,11 +59,19 @@ python3 app.py
 
 ## 🔧 Building Your Own Executable
 
+Navigate to <dir>\calendarify\command_line_app\ and follow the below steps:
+
 ### 1. Create and activate a virtual environment
 
+For Linux/macOS:
 ```bash
 python3 -m venv venv
 source venv/bin/activate
+```
+For Windows (PowerShell):
+```bash
+python -m venv venv
+venv\Scripts\activate
 ```
 
 ### 2. Install dependencies
@@ -74,8 +82,19 @@ pip install -r requirements.txt
 
 ### 3. Build with PyInstaller
 
+For Linux/macOS:
 ```bash
 pyinstaller --onefile   --hidden-import=colorama   --hidden-import=pyfiglet   --add-data "$(python3 -c 'import pyfiglet, os; print(os.path.join(os.path.dirname(pyfiglet.__file__), "fonts"))'):pyfiglet/fonts"   backend/app.py --name calendarify
+```
+For Windows (PowerShell):
+```bash
+$fontDir = python -c "import pyfiglet, os; print(os.path.join(os.path.dirname(pyfiglet.__file__), 'fonts'))"
+
+pyinstaller --onefile `
+  --hidden-import=colorama `
+  --hidden-import=pyfiglet `
+  --add-data "$fontDir;pyfiglet/fonts" `
+  --name calendarify backend/app.py
 ```
 
 > 🔁 Use this on Windows to create a `.exe` (must be run from Windows Python environment).
