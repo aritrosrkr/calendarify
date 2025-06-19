@@ -1,0 +1,48 @@
+name: Build Windows Executable
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Build calendarify.exe
+    runs-on: windows-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.13'
+
+    - name: Install dependencies
+      run: |
+        pip install pyinstaller colorama pyfiglet
+
+    - name: Find pyfiglet fonts path
+      id: fonts-path
+      run: |
+        echo "FONTS_PATH=$(python -c "import pyfiglet, os; print(os.path.join(os.path.dirname(pyfiglet.__file__), 'fonts'))")" >> $GITHUB_ENV
+
+    - name: Build executable with PyInstaller
+      run: |
+        pyinstaller --onefile ^
+          --hidden-import=colorama ^
+          --hidden-import=pyfiglet ^
+          --add-data "%FONTS_PATH%;pyfiglet/fonts" ^
+          command_line_app/app.py --name calendarify
+
+    - name: Move executable to desired location
+      run: |
+        mkdir -p command_line_app/dist
+        move dist\calendarify.exe command_line_app\dist\calendarify.exe
+
+    - name: Upload artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: calendarify-exe
+        path: command_line_app/dist/calendarify.exe
