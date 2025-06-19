@@ -17,18 +17,18 @@ jobs:
     - name: Set up Python
       uses: actions/setup-python@v4
       with:
-        python-version: '3.13'
+        python-version: '3.11'
 
     - name: Install dependencies
       run: |
         pip install pyinstaller colorama pyfiglet
 
-    - name: Find pyfiglet fonts path
+    - name: Get pyfiglet fonts path
       id: fonts-path
       run: |
         echo "FONTS_PATH=$(python -c "import pyfiglet, os; print(os.path.join(os.path.dirname(pyfiglet.__file__), 'fonts'))")" >> $GITHUB_ENV
 
-    - name: Build executable with PyInstaller
+    - name: Build with PyInstaller
       run: |
         pyinstaller --onefile ^
           --hidden-import=colorama ^
@@ -36,13 +36,13 @@ jobs:
           --add-data "%FONTS_PATH%;pyfiglet/fonts" ^
           command_line_app/app.py --name calendarify
 
-    - name: Move executable to desired location
+    - name: Move to custom dist folder
       run: |
-        mkdir -p command_line_app/dist
+        mkdir command_line_app\dist
         move dist\calendarify.exe command_line_app\dist\calendarify.exe
 
-    - name: Upload artifact
-      uses: actions/upload-artifact@v3
+    - name: Upload executable artifact
+      uses: actions/upload-artifact@v4
       with:
         name: calendarify-exe
         path: command_line_app/dist/calendarify.exe
