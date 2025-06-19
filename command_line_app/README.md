@@ -1,3 +1,4 @@
+
 # 📅 Calendarify (Command-Line App)
 
 A terminal-based tool to generate `.ics` calendar files from BRACU course schedules. It supports recurring classes, lab sessions, and exams, converting them into standard calendar events.
@@ -88,6 +89,12 @@ pyinstaller --onefile   --hidden-import=colorama   --hidden-import=pyfiglet   --
 | `No module named 'colorama'` | Install with pip & include in PyInstaller hidden-import |
 | `No module named 'pyfiglet.fonts'` | Use `--add-data` option shown above |
 | `_tkinter` errors | Use Python downloaded from [python.org](https://python.org) instead of Homebrew |
+
+---
+
+## 🙏 Special Thanks
+
+Special thanks to **[Eniamza](https://eniamza.com/)** for providing the Connect CDN, which made parts of this project possible.
 
 ---
 
