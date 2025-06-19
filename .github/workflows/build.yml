@@ -29,7 +29,7 @@ jobs:
         echo "FONTS_PATH=$(python -c "import pyfiglet, os; print(os.path.join(os.path.dirname(pyfiglet.__file__), 'fonts'))")" >> $GITHUB_ENV
 
     - name: Build with PyInstaller
-      run: pyinstaller --onefile --hidden-import=colorama --hidden-import=pyfiglet --add-data "%FONTS_PATH%;pyfiglet/fonts" command_line_app/backemd/app.py --name calendarify
+      run: pyinstaller --onefile --hidden-import=colorama --hidden-import=pyfiglet --add-data "%FONTS_PATH%;pyfiglet/fonts" command_line_app/backend/app.py --name calendarify
 
     - name: Create dist folder (if missing) and move .exe
       run: |
