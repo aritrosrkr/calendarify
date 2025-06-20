@@ -1,7 +1,7 @@
+pyinstaller
 icalendar
 pyfiglet
 colorama
 ijson
 requests
-icalendar
 pytz
