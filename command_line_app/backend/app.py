@@ -4,6 +4,8 @@ import welcome  # import the welcome screen
 import dataCollection
 import checkSchedule
 import icsCreator
+import ijson
+
 
 def main():
     welcome.show_welcome()

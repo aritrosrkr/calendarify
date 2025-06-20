@@ -1,0 +1,1 @@
+Get-ChildItem -Include desktop.ini -Recurse -Hidden | Remove-Item -Force
